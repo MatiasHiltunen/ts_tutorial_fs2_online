@@ -39,8 +39,6 @@ async function init() {
 
     await writeImage(imageName, imageData)
 
-
-
 }
 
 init()
