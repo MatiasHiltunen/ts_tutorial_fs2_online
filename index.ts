@@ -7,25 +7,44 @@ const userFakeDb = {
 
 type UserFromDb = typeof userFakeDb
 
-type LoginReturnData = UserFromDb | undefined
+type LoginReturnData = UserFromDb
 
 
-function login(user:Partial<UserFromDb>): LoginReturnData {
+function login(user: Partial<UserFromDb>): LoginReturnData {
 
-    if(userFakeDb.name === user.name && userFakeDb.password === user.password){
+    if (userFakeDb.name !== user.name) {
 
-        return userFakeDb
+        throw new Error("Tarkista käyttäjänimi ja salasana", {
+            cause: "Käyttäjänimeä ei löytynyt"
+        })
 
     }
 
+    if (userFakeDb.password !== user.password) {
+
+        throw new Error("Tarkista käyttäjänimi ja salasana", {
+            cause: "Salasanat ei täsmää"
+        })
+
+    }
+
+    return userFakeDb
 }
 
-const userFromLogin = login({
-    name: 'Pena',
-    password: '12345',
-})
+try {
 
-console.log(userFromLogin)
+    const userFromLogin = login({
+        name: 'Pena',
+        password: '12345',
+    })
+
+    console.log(userFromLogin)
+
+} catch (error) {
+
+    console.log(error)
+}
+
 
 const userFromLogin2 = login({
     name: 'Testaaja',
